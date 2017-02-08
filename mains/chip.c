@@ -27,9 +27,17 @@ int main(int argc, char **argv)
                 loop = 0;
         }
 
-        while (strcmp(p.type, "Render")) {
-            p = getPacket();
-        }
+        do {
+            getPacket(&p);
+
+            if (!strcmp(p.type, "Quit"))
+                loop = 0;
+
+            if (!strcmp(p.type, "Color"))
+                SDL_SetRenderDrawColor(
+                    ren, p.data[0], p.data[1], p.data[2], p.data[3]);
+
+        } while (strcmp(p.type, "Render"));
 
         SDL_RenderClear(ren);
         SDL_RenderPresent(ren);

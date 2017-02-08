@@ -4,4 +4,5 @@ typedef struct {
     char *data;
 } Packet;
 
-Packet getPacket(void);
+Packet getPacket(Packet *p);
+void printPacket(Packet p);
