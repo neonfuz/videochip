@@ -9,6 +9,7 @@ test: all
 	./bin/testprog | ./bin/chip
 
 bin/%: mains/%.c $(LIB_OBJS)
+	mkdir -p bin/
 	$(CC) $(CFLAGS) -o $@ $^ `sdl2-config --cflags --libs`
 
 lib/%.o: lib/%.c
