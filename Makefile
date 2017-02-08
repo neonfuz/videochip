@@ -1,17 +1,20 @@
-EXECUTABLES=chip testprog
+MAINS:=$(wildcard mains/*.c)
+EXECUTABLES:=$(addprefix bin/,$(notdir $(basename $(MAINS))))
+LIBS:=$(wildcard lib/*.c)
+LIB_OBJS:=$(LIBS:.c=.o)
 
 all: $(EXECUTABLES)
 
-test: chip testprog
-	./testprog | ./chip
+test: all
+	./bin/testprog | ./bin/chip
 
-chip: chip.c
-	$(CC) $(CFLAGS) -o chip chip.c `sdl2-config --cflags --libs`
+bin/%: mains/%.c $(LIB_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ `sdl2-config --cflags --libs`
 
-testprog: testprog.c
-	$(CC) $(CFLAGS) -o testprog testprog.c
+lib/%.o: lib/%.c
+	$(CC) $(CFLAGS) -co $@ $<
 
 clean:
 	rm $(EXECUTABLES)
 
-.PHONY: all test chip testprog clean
+.PHONY: all test clean
