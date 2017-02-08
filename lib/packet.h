@@ -1,7 +1,7 @@
 typedef struct {
     char type[8];
     int length;
-    char *data;
+    unsigned char *data;
 } Packet;
 
 Packet getPacket(Packet *p);

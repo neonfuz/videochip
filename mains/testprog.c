@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     Packet p_color = {
         .type = "Color",
         .length = 4,
-        .data = (char[]){0, 0, 0, 0xff}
+        .data = (unsigned char[]){0, 0, 0, 0xff}
     };
 
     FILE *urandom = fopen("/dev/urandom", "rb");
@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     }
 
     int color_idx = 0;
-    char target = 0;
+    unsigned char target = 0;
     while(1) {
         if(target < p_color.data[color_idx])
             --p_color.data[color_idx];
