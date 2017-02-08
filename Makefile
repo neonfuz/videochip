@@ -15,6 +15,6 @@ lib/%.o: lib/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm $(EXECUTABLES)
+	rm -f $(EXECUTABLES) $(LIB_OBJS)
 
 .PHONY: all test clean

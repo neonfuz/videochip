@@ -1,2 +1,2 @@
-/chip
-/testprog
+bin/*
+**/*.o
