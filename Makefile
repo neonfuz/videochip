@@ -12,7 +12,7 @@ bin/%: mains/%.c $(LIB_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ `sdl2-config --cflags --libs`
 
 lib/%.o: lib/%.c
-	$(CC) $(CFLAGS) -co $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	rm $(EXECUTABLES)
