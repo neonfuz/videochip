@@ -37,41 +37,20 @@ Packet getPacket(void)
 {
     Packet p;
 
-#define GETC(out)                               \
-    do {                                        \
-        int c;                                  \
-        if((c = getchar()) == EOF)              \
-            return (Packet){"Quit"};            \
-        else                                    \
-            out = c;                            \
-    } while(0)
+    int i, c;
+    for (i = 0, c = getchar(); i < 8 && c != EOF; ++i, c = getchar())
+        p.type[i] = c;
 
-#define GET32(out)                     \
-          do {                         \
-              char c;                  \
-              GETC(c); out = c << 24;  \
-              GETC(c); out |= c << 16; \
-              GETC(c); out |= c << 8;  \
-              GETC(c); out |= c;       \
-          } while(0)
+    p.length = 0;
+    for (i = 3, c = getchar(); i >= 0 && c != EOF; --i, c = getchar())
+        p.length |= c << (i*8);
 
-    GETC(p.type[0]);
-    GETC(p.type[1]);
-    GETC(p.type[2]);
-    GETC(p.type[3]);
-    GETC(p.type[4]);
-    GETC(p.type[5]);
-    GETC(p.type[6]);
-    GETC(p.type[7]);
-
-    GET32(p.length);
+    if (c == EOF)
+        return (Packet){"Quit"};
 
     p.data = malloc(p.length);
-    for(int i=0; i<p.length; ++i)
-        GETC(p.data[i]);
-
-#undef GET32
-#undef GETC
+    for(int i=0; i < p.length; ++i)
+        p.data[i] = getchar();
 
     return p;
 }
