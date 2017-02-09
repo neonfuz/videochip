@@ -1,4 +1,4 @@
-#include <SDL2/SDL.H>
+#include <SDL2/SDL.h>
 
 #include "../lib/options.h"
 #include "../lib/packet.h"
