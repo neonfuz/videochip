@@ -10,7 +10,7 @@ test: all
 
 bin/%: mains/%.c $(LIB_OBJS)
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -o $@ $^ `sdl2-config --cflags --libs`
+	$(CC) $(CFLAGS) -o $@ $^ `sdl2-config --cflags --libs` -l SDL2_image
 
 lib/%.o: lib/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<

@@ -1,22 +1,36 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "../lib/options.h"
 #include "../lib/packet.h"
+
+// Quit the program with an error message if err is zero
+void sdl_assert(int err)
+{
+    if(err)
+        return;
+
+    fputs(SDL_GetError(), stderr);
+    exit(-1);
+}
 
 int main(int argc, char **argv)
 {
     Options opt = parse_args(argc, argv);
 
-    SDL_Init(SDL_INIT_EVERYTHING);
+    sdl_assert( SDL_Init(SDL_INIT_EVERYTHING) == 0 );
+    sdl_assert( IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG );
 
     SDL_Window *win = SDL_CreateWindow(
         opt.title,
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         opt.width, opt.height,
         SDL_WINDOW_ALLOW_HIGHDPI );
+    sdl_assert(win != NULL);
 
     SDL_Renderer *ren = SDL_CreateRenderer(
         win, -1, SDL_RENDERER_PRESENTVSYNC );
+    sdl_assert(ren != NULL);
 
     int loop = 1;
     SDL_Event e;
@@ -43,6 +57,7 @@ int main(int argc, char **argv)
         SDL_RenderPresent(ren);
     }
 
+    IMG_Quit();
     SDL_Quit();
     return 0;
 }
