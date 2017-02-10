@@ -35,6 +35,7 @@ int main(int argc, char **argv)
     int loop = 1;
     SDL_Event e;
     Packet p = {"NULL", 0, NULL};
+    SDL_Rect rect = { 0 };
     while (loop) {
         while(SDL_PollEvent(&e)) {
             if(e.type == SDL_QUIT)
@@ -47,13 +48,25 @@ int main(int argc, char **argv)
             if (!strcmp(p.type, "Quit"))
                 loop = 0;
 
-            if (!strcmp(p.type, "Color"))
+            else if (!strcmp(p.type, "Color"))
                 SDL_SetRenderDrawColor(
                     ren, p.data[0], p.data[1], p.data[2], p.data[3]);
+
+            else if (!strcmp(p.type, "Rect")) {
+                rect.x = p.data[0] << 8 | p.data[1];
+                rect.y = p.data[2] << 8 | p.data[3];
+                rect.w = p.data[4] << 8 | p.data[5];
+                rect.h = p.data[6] << 8 | p.data[7];
+            }
 
         } while (strcmp(p.type, "Render"));
 
         SDL_RenderClear(ren);
+        Uint8 r, g, b, a;
+        SDL_GetRenderDrawColor(ren, &r, &g, &b, &a);
+        SDL_SetRenderDrawColor(ren, ~r, ~g, ~b, ~a);
+        SDL_RenderFillRect(ren, &rect);
+        SDL_SetRenderDrawColor(ren, r, g, b, a);
         SDL_RenderPresent(ren);
     }
 
